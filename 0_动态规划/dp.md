@@ -159,16 +159,93 @@ int main()
 
 > 怪盗基德的滑翔翼
 
-```
+![1017](./img/1017.png)
 
+```
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int N = 110;
+int n;
+int a[N], f[N], g[N];
+int main()
+{
+		int T;
+		cin>>T;
+		while(T--)
+		{
+				cin>>n;
+				for(int i = 1; i <= n; i ++)cin>>a[i];
+				
+				//正向求解
+				int res = 0;
+				for(int i = 1; i <= n; i++)
+				{
+						f[i] = 1;
+						for(int j = 1; j < i; j++)
+						{
+								if(a[i] > a[j])f[i] = max(f[i], f[j] + 1);
+						}
+						res = max(res, f[i]);
+				}
+				//反向求解
+				for(int i = n; i >= 1; i--)
+				{
+						f[i] = 1;
+						for(int j = n; j > i; j--)
+						{
+								if(a[i] > a[j])f[i] = max(f[i], f[j] + 1);
+						}
+						res = max(res, f[i]);
+				}
+				cout<<res<<endl;
+		}
+}
 ```
 
 
 
 > 登山
 
-```
+![1014](./img/1014.png)
 
+```
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+const int N = 1010;
+int n;
+int a[N], f[N], g[N];
+
+int main()
+{
+    cin>>n;
+    for(int i = 1; i <= n; i ++)cin>>a[i];
+    for(int i = 1; i <= n; i++)
+    {
+        f[i] = 1;
+        for(int j = 1; j < i; j++ )
+        {
+            if(a[i] > a[j])
+                f[i] = max(f[i], f[j] + 1);
+        }
+    }
+    for(int i = n; i >= 1; i--)
+    {
+        g[i] = 1;
+        for(int j = n; j > i; j-- )
+        {
+            if(a[i] > a[j])
+                g[i] = max(g[i], g[j] + 1);
+        }
+    }
+    int res = 0;
+    for(int i = 1; i <= n; i++)res = max(res, f[i] + g[i] - 1);
+    cout<<res<<endl;
+    return 0;
+}
 ```
 
 
@@ -176,7 +253,41 @@ int main()
 > 合唱队形
 
 ```
+#include<algorithm>
+#include<iostream>
+using namespace std;
 
+const int N = 110;
+int n;
+int a[N], f[N], g[N];
+
+int main()
+{
+    cin>>n;
+    for(int i = 1; i <= n; i ++)cin>>a[i];
+    for(int i = 1; i <= n; i++)
+    {
+        f[i] = 1;
+        for(int j = 1; j < i; j++ )
+        {
+            if(a[i] > a[j])
+                f[i] = max(f[i], f[j] + 1);
+        }
+    }
+    for(int i = n; i >= 1; i--)
+    {
+        g[i] = 1;
+        for(int j = n; j > i; j-- )
+        {
+            if(a[i] > a[j])
+                g[i] = max(g[i], g[j] + 1);
+        }
+    }
+    int res = 0;
+    for(int i = 1; i <= n; i++)res = max(res, f[i] + g[i] - 1);
+    cout<<n - res<<endl;
+    return 0;
+}
 ```
 
 
@@ -184,6 +295,36 @@ int main()
 > 友好城市
 
 ```
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+typedef pair<int, int>PII;
+
+const int N = 5010;
+
+int n;
+PII a[N];
+int f[N];
+int main()
+{
+    cin>>n;
+    for(int i = 0; i < n; i++)cin>>a[i].first>>a[i].second;
+    sort(a, a + n);
+    int res = 0;
+    for(int i = 0; i < n; i++)
+    {
+        f[i] = 1;
+        for(int j = 0; j < i; j++)
+        {
+            if(a[i].second > a[j].second)f[i] = max(f[i], f[j] + 1);
+        }
+        res = max(res, f[i]);
+    }
+    cout<<res<<endl;
+    
+    return 0;
+}
 
 ```
 
@@ -191,13 +332,44 @@ int main()
 
 > 最大上升子序列和
 
-```
+![1016](./img/1016.png)
 
+```
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int N = 1010;
+int n, a[N], f[N];
+
+int main()
+{
+    cin>>n;
+    for(int i = 1; i <= n; i++)cin>>a[i];
+    
+    int res = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        f[i] = a[i];
+        for(int j = 1; j < i; j++)
+        {
+            if(a[i] > a[j])
+            {
+                f[i] = max(f[i], f[j] + a[i]);
+            }
+        }
+        res = max(res, f[i]);
+    }
+    cout<<res<<endl;
+    return 0;
+}
 ```
 
 
 
 > 拦截导弹
+
+
 
 ```
 
@@ -207,6 +379,8 @@ int main()
 
 > 导弹防御系统
 
+
+
 ```
 
 ```
@@ -214,6 +388,8 @@ int main()
 
 
 > 最长公共上身子序列
+
+
 
 ```
 
