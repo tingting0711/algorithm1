@@ -369,27 +369,67 @@ int main()
 
 > 拦截导弹
 
-
-
-```
+![1010](./img/1010.png)
 
 ```
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int N = 1010;
+
+int n, q[N], f[N], g[N];
+
+int main()
+{
+    while(cin>>q[n])n++;
+    
+    int res = 0;
+    for(int i = 0; i < n; i++)
+    {
+        f[i] = 1;
+        for(int j = 0; j < i; j++)
+        {
+            if(q[i] <= q[j])f[i] = max(f[i], f[j] + 1);
+            res = max(res, f[i]);
+        }
+    }
+    cout<<res<<endl;
+    
+    int cnt = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int k = 0;
+        while(k < cnt && g[k] < q[i])k++;
+        g[k] = q[i];
+        if( k>= cnt)cnt ++;
+    }
+    cout<<cnt<<endl;
+    return 0;
+}
+```
+
+思考：反链定理/Dilworth定理
 
 
 
 > 导弹防御系统
 
+![187](./img/187.png)
 
+```
+/*
+暴力搜索
+记录全局最小值
+*/
 
 ```
 
-```
 
 
+> 最长公共上升子序列
 
-> 最长公共上身子序列
-
-
+![272](./img/272.png)
 
 ```
 
