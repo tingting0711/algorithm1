@@ -88,15 +88,90 @@ int main()
 
 
 /*
-解法2：
-time : 
-space : 
+解法2：反链定理（https://www.zybuluo.com/LinKArftc/note/79936）
+一个数列的最大上升子序列长度k 等于 其可被拆分为k个非上升序列的最小值
+time : O(N^2) =》 可优化为 O(NlogN)，具体参考上升子序列2
+space : O(N)
 */
+#include<iostream>
+#include<algorithm>
+using namespace std;
 
+const int N = 1010;
+int n, f[N], a[N], g[N];
+
+int main()
+{
+    int k = 0;
+    while(cin>>n && n)a[k++] = n;
+    n = k;
+    int res = 0;
+    
+    for(int i = 0; i < n; i ++)
+    {
+        f[i] = 1;
+        for(int j = 0; j < i; j ++)
+        {
+            if(a[i] <= a[j])f[i] = max(f[i], f[j] + 1);
+        }
+        res = max(res, f[i]);
+    }
+    cout<<res<<endl;
+    
+    int cnt = 0;
+    for(int i = 0; i < n; i++)
+    {
+        g[i] = 1;
+        for(int j = 0; j < i; j++)
+        {
+            if(a[i] > a[j])g[i] = max(g[i], g[j] + 1);
+        }
+        cnt = max(cnt, g[i]);
+    }
+    cout<<cnt<<endl;
+    return 0;
+}
 
 
 /*
-解法3：
-time : 
-space : 
+解法3：利用单调的性质
+time : O(N^2)
+space : O(N)
 */
+
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int N = 1010;
+int n, f[N], a[N], g[N];
+
+int main()
+{
+    int k = 0;
+    while(cin>>n && n)a[k++] = n;
+    n = k;
+    int res = 0;
+    
+    for(int i = 0; i < n; i ++)
+    {
+        f[i] = 1;
+        for(int j = 0; j < i; j ++)
+        {
+            if(a[i] <= a[j])f[i] = max(f[i], f[j] + 1);
+        }
+        res = max(res, f[i]);
+    }
+    cout<<res<<endl;
+    
+    int cnt = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int j = 0;
+        while(j < cnt && g[j] < a[i])j++;
+        g[j] = a[i];
+        if(j >= cnt)cnt ++;
+    }
+    cout<<cnt<<endl;
+    return 0;
+}

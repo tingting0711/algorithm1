@@ -40,11 +40,53 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(2^N)
+space : O(N)
 */
 
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+using namespace std;
 
+const int N = 55;
+int n, up[N], down[N], a[N], res;
+
+void dfs(int u, int su, int sd)
+{
+    // cout<<u<<" "<<n<<" "<<su<<" "<<sd<<" "<<res<<endl;
+    if(su + sd >= res)return;
+    if(u == n){res = su + sd; return;}
+    int k = 0;
+    while(k < su && a[u] < up[k])k++;
+    int temp = up[k];
+    up[k] = a[u];
+    if(k < su)dfs(u + 1, su, sd);
+    else dfs(u + 1, su + 1, sd);
+    up[k] = temp;
+    
+    k = 0;
+    while(k < sd && a[u] > down[k])k++;
+    temp = down[k];
+    down[k] = a[u];
+    if(k < sd)dfs(u + 1, su, sd);
+    else dfs(u + 1, su, sd + 1);
+    down[k] = temp;
+}
+
+int main()
+{
+    while(cin>>n, n)
+    {
+        res = n;
+        for(int i = 0; i < n; i++)cin>>a[i];
+        memset(up, 0, sizeof up);
+        memset(down, 0, sizeof down);
+        dfs(0, 0, 0);
+        cout<<res<<endl;
+    }
+    return 0;
+}
 
 /*
 解法2：
