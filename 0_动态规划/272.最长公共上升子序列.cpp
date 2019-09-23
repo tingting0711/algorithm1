@@ -38,18 +38,82 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(N^3)
+space : O(N^2)
 */
 
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int N = 3010;
+int n, a[N], b[N], f[N][N];
+
+int main()
+{
+    cin>>n;
+    for(int i = 1; i <= n; i++)cin>>a[i];
+    for(int i = 1; i <= n; i++)cin>>b[i];
+    int res = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = 1; j <= n; j++)
+        {
+            f[i][j] = f[i - 1][j];
+            if(a[i] == b[j])
+            {
+                f[i][j] = max(f[i][j], 1);
+                for(int k = 1; k < j; k++)
+                {
+                    if(b[j] > b[k])f[i][j] = max(f[i][j], f[i][k] + 1);
+                }
+            }
+            res = max(res, f[i][j]);
+            // cout<<i<<" "<<j<<" "<<": "<<f[i][j]<<endl;
+        }
+    }
+    cout<<res<<endl;
+    return 0;
+}
 
 
 /*
 解法2：
-time : 
-space : 
+time : O(N^2)
+space : O(N^2)
 */
 
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int N = 3010;
+int n, a[N], b[N], f[N][N];
+
+int main()
+{
+    cin>>n;
+    for(int i = 1; i <= n; i++)cin>>a[i];
+    for(int i = 1; i <= n; i++)cin>>b[i];
+    int res = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        int maxv = 1;
+        for(int j = 1; j <= n; j++)
+        {
+            f[i][j] = f[i - 1][j];
+            if(a[i] == b[j])
+            {
+                f[i][j] = maxv;
+            }
+            if(b[j] < a[i]) maxv = max(maxv, f[i][j] + 1);
+            res = max(res, f[i][j]);
+            // cout<<i<<" "<<j<<" "<<": "<<f[i][j]<<endl;
+        }
+    }
+    cout<<res<<endl;
+    return 0;
+}
 
 
 /*

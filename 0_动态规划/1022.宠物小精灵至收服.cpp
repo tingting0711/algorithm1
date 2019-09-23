@@ -62,11 +62,42 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(N*M*K)
+space : O(N*M)
+由于体积需至少大于1才能收服，所以 t = m - 1，表示需要前 m - 1个体积时
 */
 
+#include<iostream>
+#include<algorithm>
 
+using namespace std;
+
+const int N = 1010, M = 510, K = 110;
+
+int n, m, k;
+int f[N][M];
+
+int main()
+{
+    cin>>n>>m>>k;
+    int cnt = 0, res = 0;
+    for(int i = 1; i <= k; i++)
+    {
+        int n1, m1;
+        cin>>n1>>m1;
+        for(int j = n; j >= n1; j --)
+        {
+            for(int t = m - 1; t >= m1; t--)
+            {
+                f[j][t] = max(f[j][t], f[j - n1][t - m1] + 1);
+            }
+        }
+    }
+    cout<<f[n][m - 1]<<" ";
+    int k = m - 1;
+    while(k > 0 && f[n][k - 1] == f[n][k])k--;
+    cout<<m - k<<endl;
+}
 
 /*
 解法2：

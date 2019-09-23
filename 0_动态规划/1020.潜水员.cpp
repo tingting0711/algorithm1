@@ -64,11 +64,43 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(N*M*K)
+space :  O(N*M)
 */
 
+#include<iostream>
+#include<algorithm>
+#include<string.h>
 
+using namespace std;
+
+const int N = 50, K = 1010, M = 160;
+int n, m, k;
+int f[N][M];
+
+int main()
+{
+    cin>>m>>n>>k;
+    memset(f, 0x3f, sizeof f);
+    f[0][0] = 0;
+    int res = 8e5;
+    for(int i = 1; i <= k; i++)
+    {
+        int o2, n2, w;
+        cin>>o2>>n2>>w;
+        for(int j = N - 1; j >= o2; j--)
+        {
+            for(int k = M - 1; k >= n2; k--)
+            {
+                f[j][k] = min(f[j][k], f[j - o2][k - n2] + w);
+                if(j >= m && k >= n)res = min(res, f[j][k]);
+            }
+        }
+    }
+    cout<<res<<endl;
+
+    return 0;
+}
 
 /*
 解法2：
