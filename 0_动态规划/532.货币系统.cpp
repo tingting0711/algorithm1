@@ -38,10 +38,38 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(T*N)
+space : 0(M)
 */
 
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+using namespace std;
+const int N = 110, M = 25010;
+int n, t, a[N], f[M];
+int main()
+{
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        for(int i = 0; i < n ; i++)cin>>a[i];
+        sort(a, a + n);
+        int res = 0;
+        memset(f, 0, sizeof f);
+        f[0] = 1;
+        for(int i = 0; i < n; i++)
+        {
+            if(!f[a[i]])res ++;
+            for(int j = a[i]; j <=a[n - 1]; j++)  //用a[i]去更新其他值，查看是否能配出来
+            {
+                f[j] += f[j - a[i]];
+            }
+        }
+        cout<<res<<endl;
+    }
+}
 
 
 /*

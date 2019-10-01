@@ -43,11 +43,57 @@ si>0 表示第 i 种物品可以使用 si 次；
 
 /*
 解法1：
-time : 
-space : 
+time : 0(N * M * log S)
+space : O(M)
+背包问题：先循环物品，再循环体积，最后循环决策
+多重背包时， 使用二进制优化方案时， 所需要循环的物品为 k*v, k*w(表示体积、价值)，
+即将该物品分割为k = 1, k = 2, k = 4 ..... 的物品，故需要将k循环放在j(体积)循环之前。
 */
 
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int N = 1010;
+int n, m;
+int f[N];
 
+int main()
+{
+    cin>>n>>m;
+    for(int i = 1; i <= n; i++)
+    {
+        int v, w, s;
+        cin>>v>>w>>s;
+        if(s == 0)
+        {
+            for(int j = 0; j <= m; j++)
+            {
+                if(j >= v)f[j] = max(f[j], f[j - v] + w);
+            }
+        }
+        else
+        {
+            if(s == -1)s = 1;
+            for(int k = 1; k <= s; k *= 2)
+            {
+                s -= k;
+                for(int j = m; j >= k * v; j--)
+                {
+                    if(j >= k * v)f[j] = max(f[j], f[j - k * v] + k * w);
+                }
+            }
+            if(s)
+            {
+                for(int j = m; j >= s * v; j--)
+                {
+                    if(j >= s * v)f[j] = max(f[j], f[j - s * v] + s * w);
+                }
+            }
+        }
+    }
+    cout<<f[m]<<endl;
+    return 0;
+}
 
 /*
 解法2：

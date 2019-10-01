@@ -599,6 +599,76 @@ int main()
 
 
 
+> 有依赖的背包问题
+>
+> <img src="/Users/more/Desktop/19fall/刷题/algorithm1/0_动态规划/img/10.png" alt="10" style="zoom:80%;" />
+
+```
+#include<iostream>
+#include<algorithm>
+#include<cstring>
+using namespace std;
+const int N = 110, V = 110;
+int n, m;
+int e[N], ne[N], idx, h[N];
+int v[N], w[N];
+int f[N][V];
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx ++;
+}
+void dfs(int u)
+{
+    if(v[u] > m)return;
+    for(int i = h[u]; i != -1;  i = ne[i]) //物品
+    {
+        int son = e[i];
+        dfs(son);
+        for(int j = m - v[u]; j >= 0; j --) //体积
+        {
+            for(int k = 0; k <= j; k++)
+            {
+                f[u][j] = max(f[u][j], f[u][j - k] + f[son][k]);
+            }
+        }
+        
+    }
+    for(int j = m; j >= v[u]; j --)f[u][j] = f[u][j - v[u]] + w[u];
+    for(int j = 0; j < v[u]; j ++)f[u][j] = 0;
+    return;
+}
+int main()
+{
+    cin>>n>>m;
+    int root;
+    memset(h, -1, sizeof h);
+    for(int i = 1; i <= n ; i++)
+    {
+        int p;
+        cin>>v[i]>>w[i]>>p;
+        if(p == -1)root = i;
+        else add(p, i);
+    }
+    dfs(root);
+    cout<<f[root][m]<<endl;
+    return 0;
+}
+```
+
+
+
+
+
+
+> 小标题
+
+```
+
+```
+
+
+
+
 > 小标题
 
 ```
