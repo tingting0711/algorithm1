@@ -26,12 +26,36 @@ n≤15,m≤3000
 
 
 /*
-解法1：
-time : 
-space : 
+解法1：完全背包问题扩展
+time : O(N*M)
+space : O(N)
 */
 
-
+#include<iostream>
+#include<algorithm>
+using namespace std;
+typedef long long LL;
+const int N = 3010, M = 20;
+int n, m;
+int a[N];
+LL f[N]; 
+int main()
+{
+    cin>>n>>m;
+    f[0] = 1;
+    for(int i = 1; i <= n; i++)
+    {
+        cin>>a[i];
+        for(int j = 0; j <= m; j ++)
+        {
+            if(j >= a[i])
+            {
+                f[j] += f[j - a[i]];
+            }
+        }
+    }
+    cout<<f[m]<<endl;
+}
 
 /*
 解法2：

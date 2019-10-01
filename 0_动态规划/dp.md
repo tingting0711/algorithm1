@@ -569,17 +569,32 @@ int main()
 > <img src="./img/1057-2.png" alt="1057-2" style="zoom:50%;" />
 
 ```
-
-```
-
-
-
-> 1058股票买卖
->
-> <img src="./img/1058.png" alt="1058" style="zoom:80%;" />
-
-```
-
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+using namespace std;
+const int N = 100010, K = 105, INF = 0x3f;
+int n, k, a[N], f[N][K][2];
+int main()
+{
+    cin>>n>>k;
+    for(int i = 1; i <= n; i++)cin>>a[i];
+    memset(f, -INF, sizeof f);
+    f[0][0][0] = 0;
+    int res = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        f[i][0][0] = 0;
+        for(int j = 1; j <= k; j++)
+        {
+            f[i][j][0] = max(f[i - 1][j][0], f[i - 1][j][1] + a[i]);
+            f[i][j][1] = max(f[i - 1][j][1], f[i - 1][j - 1][0] - a[i]);
+            res = max(res, max(f[i][j][1], f[i][j][0]));
+        }
+    }
+    cout<<res<<endl;
+    return 0;
+}
 ```
 
 
