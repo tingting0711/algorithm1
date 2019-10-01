@@ -24,10 +24,36 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(N)
+space : O(N)
 */
 
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int N = 1010;
+
+int n, f[N], a[4] = {10, 20, 50, 100};
+
+int main()
+{
+    cin>>n;
+    if (!n)
+    {
+        cout<<0<<endl;
+        return 0;
+    }
+    f[0] = 1;
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = a[i]; j <= n; j++)
+        {
+            f[j] = f[j] + f[j - a[i]];
+        }
+    }
+    cout<<f[n]<<endl;
+    return 0;
+}
 
 
 /*

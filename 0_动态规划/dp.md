@@ -447,11 +447,126 @@ int main()
 
   ​				for 决策
 
+- 策略
+
+  - 体积最多是j
+    - 初始话全为0， v >= 0
+  - 体积恰好是j
+    - f[0] = 0, f[i] = 正负无穷， v >= 0
+  - 体积至少是j 
+    - f[0] = 0, f[i] = 正负无穷
+
+> 1020 潜水员
+![1020](./img/1020.png)
+```
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+
+using namespace std;
+
+const int N = 50, K = 1010, M = 160;
+int n, m, k;
+int f[N][M];
+
+int main()
+{
+    cin>>m>>n>>k;
+    memset(f, 0x3f, sizeof f);
+    f[0][0] = 0;
+    int res = 8e5;
+    for(int i = 1; i <= k; i++)
+    {
+        int o2, n2, w;
+        cin>>o2>>n2>>w;
+        for(int j = N - 1; j >= 0; j--)
+        {
+            for(int k = M - 1; k >= 0; k--)
+            {
+                f[j][k] = min(f[j][k], f[max(0,j - o2)][max(0,k - n2)] + w);
+                if(j >= m && k >= n)res = min(res, f[j][k]);
+            }
+        }
+    }
+    cout<<res<<endl;
+
+    return 0;
+}
+```
+
+
+
+> 12 背包问题求具体方案
+
+f\[i][j] = max(f\[i - 1][j], f[i - 1, j - v[i]] + w[i])
+
+字典序最小
+
+- 只能选    -> 必选
+- 只能不选  -> 不选
+- 可选可不选  -> 必选
+- 倒着考虑物品：物品N 到物品1	
+
+```
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int N = 1010;
+int v[N], w[N];
+int f[N][N];
+
+int main()
+{
+    int n, m;
+    scanf("%d%d", &n, &m);
+    for(int i = 1; i <= n; i++)cin>>v[i]>>w[i];
+    
+    for(int i = n; i >= 1; i--)
+    {
+        for(int j = 0; j <= m; j++)
+        {
+            f[i][j] = f[i + 1][j];
+            if(j >= v[i])f[i][j] = max(f[i][j], f[i + 1][j - v[i]] + w[i]);
+        }
+    }
+    int j = m;
+    for(int i = 1; i <= n; i++)
+    {
+        if(j >= v[i] && f[i][j] == f[i + 1][j - v[i]] + w[i])
+        {
+            cout<<i<<" ";
+            j -= v[i];
+        }
+    }
+    return 0;
+}
+```
+
+
+
+> 小标题
+
+```
+
+```
+
+
+
+## 状态机
+
+- 小标题
+
+- 小标题
+
 - 小标题
 
   
 
-> 小标题
+> 1057 股票买卖
+>
+> <img src="./img/1057.png" alt="1057-2" style="zoom:50%;" />
+>
+> <img src="./img/1057-2.png" alt="1057-2" style="zoom:50%;" />
 
 ```
 
@@ -459,41 +574,9 @@ int main()
 
 
 
-> 小标题
-
-```
-
-```
-
-
-
-> 小标题
-
-```
-
-```
-
-
-
-## 次标题
-
-- 小标题
-
-- 小标题
-
-- 小标题
-
-  
-
-> 小标题
-
-```
-
-```
-
-
-
-> 小标题
+> 1058股票买卖
+>
+> <img src="./img/1058.png" alt="1058" style="zoom:80%;" />
 
 ```
 

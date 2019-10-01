@@ -27,11 +27,33 @@
 
 /*
 解法1：
-time : 
-space : 
+time : O(N*M)
+space : O(N)
 */
 
-
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+using namespace std;
+const int N = 10010;
+int n, m;
+int f[N];
+int main()
+{
+    cin>>n>>m;
+    // memset(f, -1, sizeof f);
+    f[0] = 1;
+    for(int i = 0; i < n; i++)
+    {
+        int a;
+        cin>>a;
+        for(int j = m; j >= a; j--)
+        {
+            f[j] += f[j - a];
+        }
+    }
+    cout<<f[m]<<endl;
+}
 
 /*
 解法2：
