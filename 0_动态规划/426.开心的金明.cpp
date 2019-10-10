@@ -47,11 +47,28 @@ v[j1]∗w[j1]+v[j2]∗w[j2]+…+v[jk]∗w[jk]
 
 /*
 解法1：
-time : 
-space : 
+time : O(N * M)
+space : O(N)
 */
 
-
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int N = 30010, V = 10010;
+int n, m, v, p, f[N];
+int main()
+{
+    cin>>m>>n;
+    for(int i = 1; i <= n; i++)
+    {
+        cin>>v>>p;
+        for(int j = m; j >= v; j--)
+        {
+            f[j] = max(f[j], f[j - v] + v * p);
+        }
+    }
+    cout<<f[m]<<endl;
+}
 
 /*
 解法2：

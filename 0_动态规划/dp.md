@@ -210,6 +210,8 @@ int main()
 
 ![1014](./img/1014.png)
 
+
+
 ```
 #include<algorithm>
 #include<iostream>
@@ -334,6 +336,8 @@ int main()
 
 ![1016](./img/1016.png)
 
+
+
 ```
 #include<iostream>
 #include<algorithm>
@@ -370,6 +374,8 @@ int main()
 > 拦截导弹
 
 ![1010](./img/1010.png)
+
+
 
 ```
 #include<iostream>
@@ -417,6 +423,8 @@ int main()
 
 ![187](./img/187.png)
 
+
+
 ```
 /*
 暴力搜索
@@ -430,6 +438,8 @@ int main()
 > 最长公共上升子序列
 
 ![272](./img/272.png)
+
+
 
 ```
 
@@ -457,7 +467,9 @@ int main()
     - f[0] = 0, f[i] = 正负无穷
 
 > 1020 潜水员
-![1020](./img/1020.png)
+> ![1020](./img/1020.png)
+>
+> 
 ```
 #include<iostream>
 #include<algorithm>
@@ -554,9 +566,9 @@ int main()
 
 ## 状态机
 
-- 小标题
+- 股票买卖
 
-- 小标题
+- 有依赖的背包问题
 
 - 小标题
 
@@ -566,7 +578,11 @@ int main()
 >
 > <img src="./img/1057.png" alt="1057-2" style="zoom:50%;" />
 >
+> 
+>
 > <img src="./img/1057-2.png" alt="1057-2" style="zoom:50%;" />
+>
+> 
 
 ```
 #include<iostream>
@@ -658,8 +674,6 @@ int main()
 
 
 
-
-
 > 小标题
 
 ```
@@ -677,35 +691,249 @@ int main()
 
 
 
-## 次标题
+## 状态压缩DP
 
-- 小标题
+- 棋盘式（基于连通）
 
-- 小标题
-
-- 小标题
+- 基于集合
 
   
 
-> 小标题
+
+> 1064 骑士
+>
+> <img src="./img/1064.png" alt="1064" style="zoom:80%;" />
 
 ```
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
 
+typedef long long LL;
+const int N = 12, M = 1 << 10, K = 110;
+int n, m;
+int cnt[M];
+LL f[N][K][M];
+vector<int>head[M], state;
+
+bool check(int state)
+{
+    for(int i = 0; i < n; i++)
+    {
+        if((state >> i & 1) && (state >> i + 1) & 1)return false;
+    }
+    return true;
+}
+int count(int state)
+{
+    int res = 0;
+    for(int i = 0; i < n; i++)
+    {
+        res += state>>i & 1;
+    }
+    return res;
+}
+int main()
+{
+    cin>>n>>m;
+    for(int i = 0; i < 1 << n; i++)
+    {
+        if(check(i))
+        {
+            state.push_back(i);
+            cnt[i] = count(i);
+        }
+    }
+
+    for(int i = 0; i < state.size(); i ++)
+    {
+        for(int j = 0; j < state.size(); j++)
+        {
+            int a = state[i], b = state[j];
+            if ((a & b) == 0 && check(a | b))
+                head[i].push_back(j);
+        }
+    }
+    f[0][0][0] = 1;
+    for(int i = 1; i <= n + 1; i++)
+    {
+        for(int j = 0; j <= m; j++)
+        {
+            for(int a = 0; a < state.size(); a++)
+            {
+                for(int b : head[a])
+                {
+                    int c = cnt[state[a]];
+                    if(c <= j)
+                    {
+                        f[i][j][a] += f[i - 1][j - c][b];
+                    }
+                }
+            }
+        }
+    }
+    cout<<f[n + 1][m][0]<<endl;
+    return 0;
+}
 ```
 
 
 
-> 小标题
+> 327 玉米田
+>
+> <img src="./img/327.png" alt="327" style="zoom:80%;" />
 
 ```
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+const int N = 14, M = 1 << 12, mod = 1e8;
 
+int n, m; 
+vector<int> state;
+vector<int> head[M];
+int f[N][M], g[N];
+
+bool check(int state)
+{
+    for(int i = 0; i < m; i++)
+    {
+        if((state >> i & 1) && (state >> i + 1 & 1))return false;
+    }
+    return true;
+}
+
+int main()
+{
+    cin>>n>>m;
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = m - 1; j >= 0; j--)
+        {
+            int t;
+            cin>>t;
+            g[i] += !t<<j;
+        }
+    }
+    for(int i = 0; i < 1 << m; i++)
+    {
+        if(check(i))state.push_back(i);
+    }
+    
+    for(int i = 0; i < state.size(); i++)
+    {
+        for(int j = 0; j < state.size(); j++)
+        {
+            int a = state[i], b = state[j];
+            if((a & b) == 0)
+            {
+                head[i].push_back(j);
+            }
+        }
+    }
+    f[0][0] = 1;
+    for(int i = 1; i <= n + 1; i++)
+    {
+        for(int a = 0; a < state.size(); a++)
+        {
+            for(int b : head[a])
+            {
+                if((state[a] & g[i]) == 0)
+                {
+                    f[i][state[a]] = (f[i][state[a]] + f[i - 1][state[b]])%mod;
+                }
+            }
+        }
+    }
+    cout<<f[n + 1][0]<<endl;
+}
 ```
 
 
 
-> 小标题
+> 292 炮兵阵地
+>
+> <img src="./img/292.png" alt="292" style="zoom:80%;" />
 
 ```
+#include<iostream>
+#include <cstring>
+#include<algorithm>
+#include<vector>
+using namespace std;
+const int N = 110, M = 1 << 10;
 
+int n, m;
+int f[2][M][M], g[N], cnt[M];
+vector<int> state;
+
+int count(int state)
+{
+    int res = 0;
+    for(int i = 0; i < m; i++)
+    {
+        if(state >> i & 1)
+            res ++;
+    }
+    return res;
+}
+
+bool check(int state)
+{
+    for (int i = 0; i < m; i ++ )
+        if ((state >> i & 1) && ((state >> i + 1 & 1) || (state >> i + 2 & 1)))
+            return false;
+    return true;
+}
+
+int main()
+{
+    cin>>n>>m;
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = m - 1; j >= 0; j--)
+        {
+            char t;
+            cin>>t;
+            if(t == 'H')g[i] += 1 << j;
+        }
+    }
+    
+    for(int i = 0; i < 1 << m; i++)
+    {
+        if(check(i))
+        {
+            state.push_back(i);
+            cnt[i] = count(i);
+        }
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        for(int a = 0; a < state.size(); a++)
+        {
+            for(int b = 0; b < state.size(); b++)
+            {
+                for(int c = 0; c < state.size(); c++)
+                {
+                    if((state[a] & state[c]) || (state[b] & state[c]) || (state[a] & state[b]))continue;
+                    if((state[a] & g[i]) || (state[b] & g[i - 1]))continue;
+                    f[i & 1][a][b] = max(f[i & 1][a][b], f[i - 1 & 1][b][c] + cnt[state[a]]);
+                }
+            }
+        }
+    }
+    int res = 0;
+    for(int i = 0; i < state.size(); i++)
+    {
+        for(int j = 0; j < state.size(); j++)
+        {
+            res = max(res, f[n & 1][i][j]);
+        }
+    }
+    cout<<res<<endl;
+    return 0;
+}
 ```
 
