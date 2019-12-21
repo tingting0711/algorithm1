@@ -49,24 +49,35 @@
 
 - 基本原理
 - 扩展
-  - 差分
-  - 差分 + 公式
+  - 树状数组 + 差分
+  - 树状数组 + 差分 + 公式
 - 例题
 - 用处
 - 快速求前缀和  O(logN)
-  - 修改某个数      O(logN)
+  - for(int i = x; i; i -= lowbit(i))res += tr[i];
+- 修改某个数      O(logN)
+  - for(int i = x; i <= n; i += lowbit(i))tr[i] += c;
 
 ![树状数组2](./img/树状数组2.png)
 
-> 小标题
+> 初始化
 
 ```
+/* O(NlogN) */
+for(int i = 1; i <= n; i++)add(i, a[i]);
 
+/* O(N) */
+for(int i = 1; i <= n; i++)s[i] = s[i - 1] + a[i];
+for(int i = 1; i <= n; i++)tr[i] = s[i] - s[i - lowbit(i)]
 ```
 
 
 
-> 小标题
+> 树状数组 + 差分 
+
+a[L ~ R] += c
+
+求a[x] = b[1] + b[2] + ... + b[x]
 
 ```
 
